@@ -44,7 +44,8 @@ def newpost():
 @app.route('/blogpage')
 def blogpage():
     blog_id = request.args.get('blog-id')
-    return render_template('blogpage.html', id=blog_id)
+    blogs = Blog.query.all()
+    return render_template('blogpage.html', id=blog_id, blogs=blogs)
 
 if __name__ == "__main__":
     app.run()

@@ -3,8 +3,10 @@
 {% block content %}
 
 <div>
+{% for blog in blogs %}
 
-<p>{{id}}</p>
+<a class="blog" href="/blog?={{blog.id}}" id="{{blog.id}}">{{blog.name}}</a>
+{% endfor %}
 
 </div>
 {% endblock %}

@@ -3,7 +3,7 @@
 {% block content %}
 <div>
     <h2>Add A Blog</h2>
-    <form method='post'>
+    <form action="/blog" method='post'>
         <label>
             Title of your new blog:
           <input type="text" name='title' />
@@ -13,7 +13,7 @@
             Your New Blog:
             <textarea name='body'>{{body}}</textarea>
         </label>
-            <input type="hidden" name="blog-id" value="{{blog.id}}" />
+            <input type="hidden" name="blog-id" value="{{id}}" />
             <input type="submit" value='Add Blog' />
     </form>
     </div>

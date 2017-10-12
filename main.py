@@ -25,27 +25,43 @@ def index():
 
 @app.route('/blog', methods=['POST','GET'])
 def blog():
-    if request.method == 'POST':
-        blog_body = request.form['body'] 
-        blog_name = request.form['title']
-        new_blog = Blog(blog_name,blog_body)
-        db.session.add(new_blog)
+    blog_body = request.form['body']
+    blog_name = request.form['name'] 
+    amt_name = len(blog_name)
+    amt_body = len(blog_body)
+    title_error = ""
+    text_error = ""
+    if amt_name == 0:
+        title_error = "Please enter a title for your blog"
+    else:
+        blog_name=blog_name
+
+    if amt_body == 0:
+        text_error="Please enter text about your blog"
+    else:
+        blog_body=blog_body
+
+    if not title_error and not text_error:
+        blog_id = request.args.get('blog-id')
+        blog = Blog(blog_name, blog_body)
+        db.session.add(blog)
         db.session.commit()
-
         blogs = Blog.query.all()
-
-        return render_template('blog.html',title=blog_name, body=blog_body, blogs=blogs)
-
+        return render_template('blog.html',name=blog_name, body=blog_body, blogs=blogs, id=blog_id)
+    else:
+        return render_template('newpost.html', name=blog_name,body=blog_body,title_error=title_error, text_error=text_error)
 @app.route('/newpost', methods=['POST','GET'])
 def newpost():
-    return render_template('newpost.html')
+        return render_template('newpost.html')
 
 
-@app.route('/blogpage')
+@app.route('/blogpage', methods=['POST','GET'])
 def blogpage():
-    blog_id = request.args.get('blog-id')
-    blogs = Blog.query.all()
-    return render_template('blogpage.html', id=blog_id, blogs=blogs)
+    blog_id = request.args.get('id')
+    blog_body = request.form['body']
+    blog_name = request.form['name']
+    blog_num = Blog.query.get(blog_id)
+    return render_template('blogpage.html', blog_id=blog_num, name=blog_name, body=blog_body)
 
 if __name__ == "__main__":
     app.run()

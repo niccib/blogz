@@ -6,15 +6,19 @@
     <form action="/blog" method='post'>
         <label>
             Title of your new blog:
-          <input type="text" name='title' />
+            <input type="text" name='name' value='{{name}}' />
         </label>
-        
+            <p class="error">{{title_error}}</p>
         <label>
             Your New Blog:
-            <textarea name='body'>{{body}}</textarea>
+            <textarea name='body' value='{{body}}'>{{body}}</textarea>
         </label>
+            <p class="error">{{text_error}}</p>
             <input type="hidden" name="blog-id" value="{{id}}" />
             <input type="submit" value='Add Blog' />
     </form>
     </div>
+    <hr/>
+    
+    
 {% endblock %}

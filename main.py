@@ -17,7 +17,7 @@ class Blog(db.Model):
         self.name = name
         self.body = body
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/')
 def index():
     blogs = Blog.query.all()
     return render_template('blog.html', blogs=blogs)
@@ -25,14 +25,14 @@ def index():
 
 @app.route('/blog', methods=['POST','GET'])
 def blog():
-    blog_id = request.args.get('blog-id')
-    blog_body = request.form['body']
-    blog_name = request.form['name']
-    if blog_id == 0:
-        return render_template('blog.html', name=blog_name, body=blog_body)
+    blog_id = request.args.get('id')
+    if blog_id == None:
+        blogs = Blog.query.all() 
+        return render_template('blog.html', blogs=blogs)
     else:
         single = Blog.query.get(blog_id)
         return render_template('blogpage.html',blog_id=single)
+    
 
 @app.route('/newpost', methods=['POST','GET'])
 def newpost():
@@ -70,10 +70,8 @@ def newpost():
 @app.route('/blogpage', methods=['POST','GET'])
 def blogpage():
     blog_id = request.args.get('id')
-    blog_body = request.form['body']
-    blog_name = request.form['name']
     blog_num = Blog.query.get(blog_id)
-    return render_template('blogpage.html', blog_id=blog_num, name=blog_name, body=blog_body)
+    return render_template('blogpage.html', blog_id=blog_num)
 
 if __name__ == "__main__":
     app.run()

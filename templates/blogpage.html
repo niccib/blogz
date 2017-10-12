@@ -3,9 +3,9 @@
 {% block content %}
 
 <div>
-<p>{{blog_id}}</p>
-<p>{{name}}</p>
-<p>{{body}}</p>
+{% for blog in blog_id %}
+<p>{{blog.name}}</p>
+<p>{{blog.body}}</p>
 
 </div>
 {% endblock %}

@@ -25,13 +25,14 @@ def index():
 
 @app.route('/blog', methods=['POST','GET'])
 def blog():
-    blog_id_num = request.args.get('id')
-    if blog_id_num == None:
-        blogs = Blog.query.all() 
+    blog_id = request.args.get('id')
+    if blog_id == None:
+        blogs = Blog.query.all()
         return render_template('blog.html', blogs=blogs)
+
     else:
-        single_blog = Blog.query.get(blog_id_num)
-        return render_template('blogpage.html',blog_id=single_blog)
+        single_blog = Blog.query.get(blog_id)
+        return render_template('blogpage.html', single_blog=single_blog)
     
 
 @app.route('/newpost', methods=['POST','GET'])

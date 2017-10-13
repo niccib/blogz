@@ -70,11 +70,5 @@ def newpost():
         
     
 
-@app.route('/blogpage')
-def blogpage():
-    blog_id = request.args.get('id')
-    blog_num = Blog.query.get(blog_id)
-    return render_template('blogpage.html', blog_id=blog_num)
-
 if __name__ == "__main__":
     app.run()

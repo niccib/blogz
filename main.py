@@ -107,7 +107,7 @@ def logout():
     del session['username']
     return redirect('/blog')
 
-@app.route('/blog')
+@app.route('/blog', methods=['POST','GET'])
 def blog():
 
     blog_id = request.args.get('id')
@@ -116,16 +116,15 @@ def blog():
     if user_id:
         user_id = request.args.get('user')
         single_user = Blog.query.get(user_id)
-        users = User.query.all()
         blogs = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('singleUser.html',user_id=user_id, single_user=single_user, blogs=blogs, users=users)
+        return render_template('singleUser.html', blogs=blogs)
     if not blog_id:
         all_blogs = Blog.query.all()
         all_users = User.query.all()
         return render_template('blog.html', blogs=all_blogs, users=all_users)
     else:
-        user_name = User.query.all()
         single_blog = Blog.query.get(blog_id)
+        user_name = Blog.query.filter_by(owner_id=user_id).all()
         return render_template('blogpage.html', single_blog=single_blog, user=user_name)
     
 

@@ -3,9 +3,9 @@
 {% block content %}
 
 <div>
-<p><h2>{{single_blog.name}}</h2></p>
-<p><h3>{{single_blog.body}}</h3></p>
-<p>Written By: {{user.username}}</p>
+<p><h1>{{single_blog.name}}</h1></p>
+<p><h2>{{single_blog.body}}</h2></p>
+<p>Written By: {{single_blog.owner.username}}</p>
 
 </div>
 {% endblock %}

@@ -65,8 +65,8 @@ def signup():
             flash('Passwords do not match')
             return redirect('/signup')
 
-        username_check = User.query.filter_by(username=username).count()
-        if username_check > 0:
+        existing_user = User.query.filter_by(username=username).count()
+        if existing_user > 0:
             flash('Username exists already')
             return redirect('/signup')
 

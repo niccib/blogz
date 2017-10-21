@@ -47,42 +47,38 @@ def signup():
         username = request.form['username']
         password = request.form['password']
         verify = request.form['verify']
-        amt_name = len(username)
-        amt_pass = len(password)
-        name_error = ""
-        pass_error = ""
-        ver_error= ""
-        exisiting_user = User.query.filter_by(username=username).first()
-        if amt_name <3 or amt_name >20 or amt_name == 0:
-            name_error="Not a valid username"
-        else:
-            username = username
-    
-        for n in username:
-            if n == ' ':
-                name_error="User name cannot contain spaces"
-        else:
-            username = username
-            
-        if amt_pass <3 or amt_pass >20 or amt_pass == 0:
-            pass_error="Not a valid password"
-        for p in password:
-            if p == ' ':
-                pass_error="Password cannot contain spaces"
 
-        if verify != password:
-            ver_error="Password does not match"
+        if len(username) < 3:
+            flash('User name must be longer than 3 characters')
+            return redirect('/signup')
+        
+        for name in username:
+            if name == ' ':
+                flash('Username cannot contain spaces')
+                return redirect('/signup')
 
-        if exisiting_user:
-            return render_template('signup.html', name_error=name_error, pass_error=pass_error, ver_error=ver_error, username=username, password=password)
-        else:
-            new_user = User(username, password)
-            db.session.add(new_user)
-            db.session.commit()
-            session['username'] = username
-            return redirect('/newpost')
+        if len(password) < 3:
+            flash('Password must be longer than 3 characters')
+            return redirect('/signup')       
+        
+        if password != verify:
+            flash('Passwords do not match')
+            return redirect('/signup')
 
-    return render_template('signup.html')
+        username_check = User.query.filter_by(username=username).count()
+        if username_check > 0:
+            flash('Username exists already')
+            return redirect('/signup')
+
+
+        new_user = User(username, password)
+        db.session.add(new_user)
+        db.session.commit()
+        session['username'] = username
+        return redirect("/newpost")
+    else:
+        return render_template('signup.html')
+
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -114,18 +110,21 @@ def blog():
     user_id = request.args.get('user')
     users = User.query.all()
     if user_id:
-        user_id = request.args.get('user')
-        single_user = Blog.query.get(user_id)
+        user_names = User.query.get(user_id)
+        
         blogs = Blog.query.filter_by(owner_id=user_id).all()
-        return render_template('singleUser.html', blogs=blogs)
-    if not blog_id:
-        all_blogs = Blog.query.all()
-        all_users = User.query.all()
-        return render_template('blog.html', blogs=all_blogs, users=all_users)
-    else:
+        return render_template('singleUser.html', blogs=blogs, user_id=user_names)
+
+    if blog_id:
         single_blog = Blog.query.get(blog_id)
         user_name = Blog.query.filter_by(owner_id=user_id).all()
         return render_template('blogpage.html', single_blog=single_blog, user=user_name)
+
+    else:
+        all_blogs = Blog.query.all()
+        all_users = User.query.all()
+        return render_template('blog.html', blogs=all_blogs, users=all_users)
+        
     
 
 @app.route('/newpost', methods=['POST','GET'])

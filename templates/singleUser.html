@@ -1,20 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<br>
 <div>
-<h2>Blogs Written By: </h2>
-    {% for blog in blogs %}
-    <p><h3><a class="blog" href="./blog?id={{blog.id}}" name="name" id="{{blog.id}}">{{blog.name}}</a></h3></p>
-    <p><h3 name="body" value="{{blog.body}}">{{blog.body}}</h3></p>       
-    <h2><p>Written By: <a href="./blog?user={{blog.owner.id}}" id="{{blog.owner.id}}">{{blog.owner.username}}</a></p></h2>
+<h1><b>Blogs Written From The Author You Chose: </b></h1>
+        <hr />
 
-    <hr />
-        
+    {% for blog in blogs %}
+    <li><h1><a class="blog" href="./blog?id={{blog.id}}" id="{{blog.id}}">{{blog.name}}</a></h1></li>
+    <li><h2 name="body" value="{{blog.body}}">{{blog.body}}</h2></li>      
+    <li><p>Written By: <a href="/blog?user={{blog.owner.id}}" id="{{blog.owner.id}}">{{blog.owner.username}}</a></p></li>
+    
+        <hr />   
     {% endfor %}
         
-
-
-
 </div>
 {% endblock %}

@@ -5,18 +5,18 @@
 
 
 <hr />
-    <h1>Blogs</h1>
+    <h1><b>Blogs</b></h1>
         
 {% for user in users %}  
     {% for blog in blogs %}
         {% if user.id == blog.owner_id %}
-        <li><h1><a class="blog" href="./blog?id={{blog.id}}" id="{{blog.id}}">{{blog.name}}</a></h1></li>
-        <p>{{blog.body}}</p>
-        <li><p>Written By: <a href="/blog?user={{user.username}}" id="{{user.id}}">{{user.username}}</a></p></li>
+        <li><h2><a class="blog" href="./blog?id={{blog.id}}" id="{{blog.id}}">{{blog.name}}</a></h2></li>
+        <li><h2>{{blog.body}}</h2></li>
+        <li><p>Written By: <a href="/blog?user={{blog.owner.id}}" id="{{user.id}}">{{user.username}}</a></p></li>
         {% endif %}
 
     {% endfor %}
-    <hr />
+
 {% endfor %}
 
     
